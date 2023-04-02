@@ -4,6 +4,10 @@ use std::io::{self, Write};
 use std::path::{Path};
 use std::collections::HashMap;
 use std::process::exit;
+use std::{
+    io::{prelude::*, BufReader},
+    net::{TcpListener, TcpStream},
+};
 
 #[derive(Debug)]
 struct Lexer<'a> {
@@ -116,22 +120,59 @@ fn hash_all_documents(path: &str, lowercase: bool) -> HashMap<String, HashMap<St
 // }
 
 fn print_tfidf_vecs(doc: &Vec<(String, f64)>){
-    for token in doc.iter().take(10) {
+    for token in doc.iter().take(5) {
         println!("{}: TFIDF - {}", token.0, token.1);
     }
 }
 fn main() {
     println!("Hashing........");
+
     let all_hashed_documents = hash_all_documents("docs.gl/gl4", true);
     
-    let query = parse_string(&get_user_input("Enter query: "), true);
-
-    let search_results = search(&query, &all_hashed_documents);
-
-    print_tfidf_vecs(&search_results);
-
-    // print_hashed(&all_hashed_documents.get(&search_results[0].0).unwrap());
+    loop {
+        let query = get_user_input("Enter command or query: ");
+        if query == "quit" {
+            break;
+        }
+        if query.len() > 5 && &query[..5] == "serve" {
+            do_web_stuff(&query[6..]);
+            break;
+        }
+        let query = parse_string(&query, true);
+        let search_results = search(&query, &all_hashed_documents);
+        print_tfidf_vecs(&search_results);
+        // do_web_stuff(&search_results[0].0)
+    }
+    
         
+}
+
+fn do_web_stuff(query: &str){
+    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
+        for stream in listener.incoming() {
+            let stream = stream.unwrap();
+
+            handle_connection(stream, &query);
+        }
+}
+
+fn handle_connection(mut stream: TcpStream, query: &str) {
+    eprintln!("{}", query);
+    let buf_reader = BufReader::new(&mut stream);
+    let http_request: Vec<_> = buf_reader
+        .lines()
+        .map(|result| result.unwrap())
+        .take_while(|line| !line.is_empty())
+        .collect();
+
+        let status_line = "HTTP/1.1 200 OK";
+        let contents = get_raw_xhtml(&query);
+        let length = contents.len();
+    
+        let response =
+            format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
+    
+        stream.write_all(response.as_bytes()).unwrap();
 }
 
 fn get_user_input(prompt: &str) -> String {
@@ -237,6 +278,12 @@ fn visit_dirs_and_get_xhtml_extensions(dir: &Path, file_paths: &mut Vec<String>)
 // fn print_input_file(file_path: &str) {
 //     println!("{}", fs::read_to_string(file_path).unwrap());
 // }
+
+
+fn get_raw_xhtml(file_path: &str) -> String{
+    let file = fs::read_to_string(&file_path).unwrap();
+    return file;
+}
 
 fn get_string_from_xhtml_file(file_path: &str, lowercase: bool) -> io::Result<String> {
     let file = File::open(file_path)?;
