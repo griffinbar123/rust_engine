@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Custom App</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Local File Searcher</h1>
+    <div id = "tool">
+        <div id = "input-div">
+          <label for="fentry">Enter Query:</label>
+          <div id="inner-input-div">
+            <input name = "fentry" type="text" id="fentry">
+            <button id = "fsubmit" value = "submit">Submit</button>
+          </div>
+      </div>
+      <div id = "input-div">
+        <label for="dentry">Enter Directory To Search:</label>
+        <div id="inner-input-div">
+          <input name = "dentry" type="text" id="dentry">
+          <button id = "dsubmit" value = "submit">Submit</button>
+        </div>
+    </div>
+    </div>
+    <div id="loading">
+    </div>
+    <ul id="search-results">
+        
+    </ul>
+    <script src="index.js"></script>
+  </body>
+</html>

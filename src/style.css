@@ -1,0 +1,76 @@
+#tool {
+    display: flex;
+    width: 100%;
+    /* border: 2px solid rgb(54, 54, 54); */
+    justify-content: space-around;
+}
+
+#input-div {
+    display: flex;
+    flex-direction: column;
+    /* border: 2px solid rgb(255, 158, 158); */
+    width: 50%;
+}
+
+#inner-input-div {
+    display: inline;;
+}
+
+#loading {
+    font-size: 30px;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* border: 2px solid rgb(22, 22, 22); */
+}
+
+input, label, button {
+    padding: 4px;
+    margin: 4px;
+}
+
+label {
+    font-size: 26px;
+}
+
+button {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+input {
+    width: 70%;
+}
+
+#query-input {
+    display: inline;
+}
+
+ul {
+    list-style-type: none;
+    margin: 4px;
+    padding: 4px;
+    margin-top: 16px;
+}
+
+li {
+    cursor: pointer;
+    padding: 4px;
+    font-size: 14px;
+    border-left: 2px solid rgb(21, 21, 21);
+    border-right: 2px solid rgb(21, 21, 21);
+    border-top: 1px solid rgb(21, 21, 21);
+    border-bottom: 1px solid rgb(21, 21, 21);
+}
+
+li:hover{
+    background-color: rgb(33, 33, 33);
+    color: rgb(233, 233, 233);
+}
+
+#search-results {
+    overflow: scroll;
+}
