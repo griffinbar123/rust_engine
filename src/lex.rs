@@ -1,9 +1,5 @@
-use std::path::{Path};
-use std::collections::HashMap;
+use std::io::{self, Write};
 
-pub mod parse;
-
-#[derive(Debug)]
 pub struct Lexer<'a> {
     content: &'a [char],
 }
@@ -61,68 +57,18 @@ impl<'a> Iterator for Lexer<'a> {
     }
 }
 
-pub fn hash_document(path: &str, lowercase: bool) -> HashMap<String, u32> {
-    let content = parse::get_string_from_xhtml_file(&path, lowercase)
-        .unwrap()
-        .chars()
-        .collect::<Vec<_>>();
 
-    let mut hashed_document: HashMap<String, u32> = HashMap::new();
-
-    for token in Lexer::new(&content) {
-        let token = token.iter().collect::<String>();
-        if hashed_document.contains_key(&token) {
-            let token_count = hashed_document.get_mut(&token).unwrap().clone();
-            // println!("{}: Count - {}", &token, token_count);
-            hashed_document.insert(token, token_count+1);
-        } else {
-            hashed_document.insert(token, 1);
-        }
+fn _get_user_input(prompt: &str) -> String {
+    //useful input to get user input easily
+    let mut s=String::new();
+    print!("{prompt}");
+    io::stdout().flush().expect("did not flush");
+    io::stdin().read_line(&mut s).expect("Did not enter a correct string");
+    if let Some('\n')=s.chars().next_back() {
+        s.pop();
     }
-    return hashed_document;
-}
-
-pub fn hash_all_documents(path: &str, lowercase: bool) -> HashMap<String, HashMap<String, u32>> {
-    let home_dir = Path::new(path);
-
-    let mut file_paths: Vec<String> = Vec::new();
-    parse::visit_dirs_and_get_xhtml_extensions(&home_dir, &mut file_paths);
-
-    let mut all_hashed_documents: HashMap<String, HashMap<String, u32>> = HashMap::new();
-    for file_path in file_paths {
-        all_hashed_documents.insert(file_path.clone(), hash_document(&file_path, lowercase));
-        println!("{}", &file_path);
+    if let Some('\r')=s.chars().next_back() {
+        s.pop();
     }
-
-    return all_hashed_documents;
+    return s;
 }
-
-// fn print_all_hashed(docs: &HashMap<String, HashMap<String, u32>> ){
-//     let docs: Vec<(&String, &HashMap<String, u32>)> = docs.into_iter().collect();
-//     for doc in docs {
-//         println!("{}: Count - {}", doc.0, doc.1.len());
-//     }
-// }
-
-pub fn print_hashed(doc: &HashMap<String, u32>){
-    let mut doc = doc.iter().collect::<Vec<_>>();
-    doc.sort_by_key(|(_, b)| *b);
-    doc.reverse();
-    for token in doc.iter() {
-        println!("{}: Count - {}", token.0, token.1);
-    }
-}
-
-// fn get_user_input(prompt: &str) -> String {
-//     let mut s=String::new();
-//     print!("{prompt}");
-//     io::stdout().flush().expect("did not flush");
-//     io::stdin().read_line(&mut s).expect("Did not enter a correct string");
-//     if let Some('\n')=s.chars().next_back() {
-//         s.pop();
-//     }
-//     if let Some('\r')=s.chars().next_back() {
-//         s.pop();
-//     }
-//     return s;
-// }

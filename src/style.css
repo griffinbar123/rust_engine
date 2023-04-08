@@ -27,7 +27,7 @@ body {
     /* border: 2px solid rgb(22, 22, 22); */
 }
 
-input, label, button {
+.search, label, button {
     padding: 4px;
     margin: 4px;
 }
@@ -41,7 +41,7 @@ button {
     padding-right: 20px;
 }
 
-input {
+.search {
     width: 70%;
 }
 
@@ -53,7 +53,7 @@ ul {
     list-style-type: none;
     margin: 4px;
     padding: 4px;
-    margin-top: 16px;
+    margin-top: 8px;
 }
 
 li {
@@ -74,3 +74,49 @@ li:hover{
 #search-results {
     overflow: scroll;
 }
+
+
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    max-height: 300px;
+    overflow: scroll;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content p {
+    color: black;
+    padding: 4px 4px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content p:hover {background-color: #ddd;}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+#showPath {
+    margin-top: 8px;
+    padding: 0px;
+}
+
+#show-path-label {
+    font-size: 16px;
+    margin-bottom: 0px;
+    /* border: solid 1px #000000 */
+}
+
+#check-div {
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+

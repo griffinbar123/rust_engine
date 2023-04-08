@@ -13,14 +13,21 @@
         <div id = "input-div">
           <label for="fentry">Enter Query:</label>
           <div id="inner-input-div">
-            <input name = "fentry" type="text" id="fentry">
+            <input name = "fentry" type="text" id="fentry" class="search">
             <button id = "fsubmit" value = "submit">Submit</button>
+          </div>
+          <div id= "check-div">
+            <label id="show-path-label" for="showPath">Show Path? </label>
+            <input type="checkbox" id="showPath" name="showPath" value="show">
           </div>
       </div>
       <div id = "input-div">
         <label for="dentry">Enter Directory To Search:</label>
         <div id="inner-input-div">
-          <input name = "dentry" type="text" id="dentry">
+          <input onclick="fillDirectoryDropdown()" name = "dentry" type="text" id="dentry" class="search">
+          <div id="myDropdown" class="dropdown-content">
+
+          </div>
           <button id = "dsubmit" value = "submit">Submit</button>
         </div>
     </div>
