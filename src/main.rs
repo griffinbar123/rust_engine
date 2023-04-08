@@ -1,6 +1,3 @@
-use parse::get_local_directories;
-
-// use std::collections::HashMap;
 pub mod lex;
 pub mod parse;
 pub mod server;

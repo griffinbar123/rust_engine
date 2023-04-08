@@ -2,6 +2,7 @@ use xml;
 use std::fs::{self, File};
 use std::path::{Path};
 use super::lex;
+use pdf_extract;
 
 pub fn visit_dirs_and_get_supported_extensions(dir: &Path, file_paths: &mut Vec<String>) {
     if dir.is_dir() {
@@ -17,7 +18,7 @@ pub fn visit_dirs_and_get_supported_extensions(dir: &Path, file_paths: &mut Vec<
                     Some(ext) => ext,
                     _ => continue,
                 };
-                if ext == "xhtml" {
+                if ext == "xhtml" || ext == "pdf" {
                     file_paths.push(path.as_path().display().to_string());
                 }
             }
@@ -66,10 +67,22 @@ pub fn get_contents_from_file(file_path: &str, lowercase: bool) -> Option<String
         Some(ext) => ext,
         None => return None,
     };
+
     if ext == "xhtml" {
         return get_contents_from_xhtml_file(file_path, lowercase);
+    } else if ext == "pdf" {
+        return get_contents_from_pdf_file(file_path, lowercase);
     } else {
         return None;
+    }
+}
+
+fn get_contents_from_pdf_file(file_path: &str, lowercase: bool) -> Option<String> {
+    // gets pdf contents as string
+    if lowercase {
+        return Some(pdf_extract::extract_text(&file_path).unwrap().to_lowercase());
+    } else {
+        return Some(pdf_extract::extract_text(&file_path).unwrap());
     }
 }
 
